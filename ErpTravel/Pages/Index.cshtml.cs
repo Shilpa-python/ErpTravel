@@ -1,23 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc;
 
 public class IndexModel : PageModel
 {
-    public IActionResult OnGet()
+    public void OnGet()
     {
-        // Check if the user is logged in
+        // If user is not logged in, redirect to the login page
         if (HttpContext.Session.GetString("IsLoggedIn") != "true")
         {
-            // If not logged in, redirect to the login page
-            return RedirectToPage("/Login");
+            Response.Redirect("/Login");
         }
+    }
+
+    public IActionResult OnPost(int days, int adults, int childrenWithBed, int childrenWithoutBed, int rooms, string vehicle)
+    {
+        TempData["Message"] = $"Booking for {days} Days to Singapore has been created!";
+        TempData["Details"] = $"Adults: {adults}, Children with Bed: {childrenWithBed}, Children without Bed: {childrenWithoutBed}, Rooms: {rooms}, Vehicle: {vehicle}";
 
         return Page();
     }
-
-    public void OnPost(string destination, int adults, int children, string vehicle, string room, int extraBeds)
-    {
-        TempData["Message"] = $"Booking for {destination} has been created!";
-    }
 }
-
